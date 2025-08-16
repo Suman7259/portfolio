@@ -1,89 +1,501 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Suman Sourav Chakra | Portfolio</title>
-  <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Suman Sourav Chakra — Portfolio</title>
+  <meta name="description" content="Portfolio of Suman Sourav Chakra — Final-year B.Tech (CSE). Full‑stack MERN, AI/ML, Cloud.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f1220;          /* dark */
+      --bg-soft: #14182b;
+      --text: #e7e9ee;
+      --muted: #a7adbd;
+      --brand: #6c8cff;
+      --brand-2: #4de1c1;
+      --card: #0f1326;
+      --stroke: rgba(255,255,255,.08);
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+    }
+    :root.light {
+      --bg: #f7f8fc;          /* light */
+      --bg-soft: #ffffff;
+      --text: #0f1220;
+      --muted: #374151;
+      --brand: #3b82f6;
+      --brand-2: #10b981;
+      --card: #ffffff;
+      --stroke: rgba(15,18,32,.08);
+      --shadow: 0 12px 28px rgba(15,18,32,.12);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { height: 100%; scroll-behavior: smooth; }
+    body {
+      margin: 0; font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background: radial-gradient(1200px 600px at 80% -10%, rgba(108,140,255,.35), transparent 60%),
+                  radial-gradient(1000px 500px at -10% 20%, rgba(77,225,193,.25), transparent 60%),
+                  var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    .container { width: min(1200px, calc(100% - 2rem)); margin: 0 auto; }
+
+    /* Navbar */
+    .nav {
+      position: sticky; top: 0; z-index: 50; backdrop-filter: saturate(180%) blur(14px);
+      background: color-mix(in srgb, var(--bg), transparent 35%);
+      border-bottom: 1px solid var(--stroke);
+    }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+    .brand { display: flex; align-items: center; gap: .75rem; font-weight: 700; letter-spacing: .3px; }
+    .brand .badge { font-size: .7rem; padding: .2rem .5rem; border: 1px solid var(--stroke); border-radius: 999px; color: var(--muted); }
+    .links { display: flex; align-items: center; gap: 1rem; }
+    .links a { padding: .55rem .8rem; border-radius: 8px; color: var(--muted); font-weight: 500; }
+    .links a.active, .links a:hover { color: var(--text); background: color-mix(in srgb, var(--brand) 14%, transparent); }
+    .nav-actions { display: flex; align-items: center; gap: .5rem; }
+    .btn { appearance: none; border: 1px solid var(--stroke); background: linear-gradient(180deg, color-mix(in srgb, var(--bg-soft), transparent 6%), var(--bg-soft)); color: var(--text); border-radius: 12px; padding: .6rem .9rem; font-weight: 600; cursor: pointer; box-shadow: var(--shadow); }
+    .btn.brand { border: none; background: linear-gradient(135deg, var(--brand), var(--brand-2)); color: #0b1022; }
+
+    /* Hero */
+    .hero { padding: 7rem 0 4rem; position: relative; overflow: hidden; }
+    .hero-grid { display: grid; grid-template-columns: 1.2fr .8fr; gap: 2rem; align-items: center; }
+    .eyebrow { display: inline-flex; align-items: center; gap: .6rem; font-size: .9rem; color: var(--muted); border: 1px dashed var(--stroke); padding: .35rem .6rem; border-radius: 999px; }
+    .title { font-size: clamp(2rem, 4.6vw, 3.4rem); line-height: 1.1; margin: .6rem 0 1rem; font-weight: 800; }
+    .title span.gradient { background: linear-gradient(135deg, var(--brand) 0%, var(--brand-2) 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .subtitle { font-size: 1.075rem; color: var(--muted); max-width: 64ch; }
+    .cta-row { margin-top: 1.5rem; display: flex; gap: .8rem; flex-wrap: wrap; }
+
+    .card { background: var(--card); border: 1px solid var(--stroke); border-radius: 16px; padding: 1rem; box-shadow: var(--shadow); }
+    .hero-card { padding: 1.25rem; }
+    .stats { display: grid; grid-template-columns: repeat(3,1fr); gap: .75rem; margin-top: .75rem; }
+    .stat { text-align: center; padding: .6rem .4rem; border-radius: 12px; border: 1px solid var(--stroke); background: color-mix(in srgb, var(--bg-soft), transparent 10%); }
+    .stat .num { font-weight: 800; font-size: 1.4rem; }
+    .avatar { width: 120px; height: 120px; border-radius: 50%; border: 3px solid color-mix(in srgb, var(--brand), transparent 20%); box-shadow: var(--shadow); object-fit: cover; }
+
+    /* Sections */
+    section { padding: 4rem 0; }
+    .section-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.3rem; }
+    .section-title { font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 800; }
+    .muted { color: var(--muted); }
+
+    /* About */
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .kpis { display: grid; grid-template-columns: repeat(4,1fr); gap: .8rem; }
+    .kpi { text-align: center; border-radius: 12px; padding: .8rem; border: 1px solid var(--stroke); }
+    .kpi .big { font-size: 1.4rem; font-weight: 800; }
+
+    /* Skills */
+    .skills { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; }
+    .chip { display: inline-flex; align-items: center; gap: .45rem; padding: .5rem .7rem; border-radius: 999px; border: 1px solid var(--stroke); background: color-mix(in srgb, var(--bg-soft), transparent 8%); margin: .25rem; font-weight: 600; }
+    .bar { height: 10px; background: color-mix(in srgb, var(--bg-soft), transparent 30%); border-radius: 999px; overflow: hidden; border: 1px solid var(--stroke); }
+    .bar > span { display: block; height: 100%; background: linear-gradient(90deg, var(--brand), var(--brand-2)); }
+
+    /* Projects */
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+    .project { overflow: hidden; position: relative; }
+    .project .thumb { border-radius: 12px; aspect-ratio: 16/10; object-fit: cover; border: 1px solid var(--stroke); }
+    .project .meta { position: absolute; inset: auto 0 0 0; padding: 1rem; background: linear-gradient(180deg, transparent, rgba(0,0,0,.6)); }
+    .tag { font-size: .75rem; padding: .2rem .5rem; border: 1px solid var(--stroke); border-radius: 999px; margin-right: .35rem; color: var(--text); background: color-mix(in srgb, var(--brand), transparent 85%); }
+
+    /* Timeline */
+    .timeline { position: relative; padding-left: 1rem; }
+    .timeline::before { content: ""; position: absolute; left: 12px; top: 0; bottom: 0; width: 2px; background: linear-gradient(var(--brand), var(--brand-2)); border-radius: 2px; }
+    .tl-item { position: relative; margin: 1rem 0 1.2rem 0; padding-left: 2.2rem; }
+    .tl-item::before { content: ""; position: absolute; left: 6px; top: .3rem; width: 14px; height: 14px; border-radius: 50%; background: var(--bg-soft); border: 2px solid var(--brand); box-shadow: var(--shadow); }
+    .pill { display: inline-block; font-size: .75rem; border: 1px solid var(--stroke); border-radius: 999px; padding: .15rem .5rem; color: var(--muted); }
+
+    /* Testimonials */
+    .testimonials { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .quote { font-size: 1rem; }
+
+    /* Contact */
+    form { display: grid; gap: .75rem; }
+    input, textarea { width: 100%; padding: .8rem 1rem; border-radius: 12px; border: 1px solid var(--stroke); background: var(--bg-soft); color: var(--text); font: inherit; }
+    textarea { resize: vertical; min-height: 120px; }
+
+    /* Footer */
+    footer { padding: 2.2rem 0; border-top: 1px solid var(--stroke); color: var(--muted); }
+    .social { display: flex; gap: .6rem; }
+    .social a { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 50%; border: 1px solid var(--stroke); }
+
+    /* Utilities */
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .center { text-align: center; }
+    .hidden { display: none; }
+    .mobile { display: none; }
+
+    /* Responsive */
+    @media (max-width: 960px) {
+      .hero-grid, .about-grid, .grid, .skills, .row, .testimonials { grid-template-columns: 1fr; }
+      .kpis { grid-template-columns: repeat(2,1fr); }
+      .links { display: none; }
+      .mobile { display: inline-flex; }
+      .nav-inner { height: 60px; }
+    }
+  </style>
 </head>
 <body>
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="container nav-inner">
+      <div class="brand">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12a8 8 0 1 1 16 0v6.5a1.5 1.5 0 0 1-2.2 1.33l-3.6-1.8a1.5 1.5 0 0 0-1.35 0l-3.6 1.8A1.5 1.5 0 0 1 6 18.5V12Z" stroke="currentColor" stroke-width="1.5"/></svg>
+        <span>Suman Sourav Chakra</span>
+        <span class="badge">Portfolio</span>
+      </div>
+      <div class="links" id="nav-links">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#skills">Skills</a>
+        <a href="#projects">Projects</a>
+        <a href="#experience">Experience</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="nav-actions">
+        <button class="btn" id="themeToggle" aria-label="Toggle theme">Toggle Theme</button>
+        <button class="btn mobile" id="menuToggle" aria-label="Open menu">Menu</button>
+        <a class="btn brand" href="#contact">Hire Me</a>
+      </div>
+    </div>
+  </nav>
 
-  <header>
-    <div class="container">
-      <h1>Suman Sourav Chakra</h1>
-      <p>Software Engineering Student | Java Developer | Tech Enthusiast</p>
+  <!-- HERO -->
+  <header class="hero" id="home">
+    <div class="container hero-grid">
+      <div>
+        <span class="eyebrow">👋 Hi, I’m</span>
+        <h1 class="title">Suman Sourav Chakra — <span class="gradient">Full‑Stack (MERN) & AI Enthusiast</span></h1>
+        <p class="subtitle">Final‑year B.Tech (CSE). I build performant web apps, explore AI/ML, and deploy on the cloud. Passionate about translating ideas into reliable, elegant software.</p>
+        <div class="cta-row">
+          <a class="btn brand" href="#projects">View Projects</a>
+          <a class="btn" href="#about">About Me</a>
+          <a class="btn" href="assets/Suman_Sourav_Chakra_CV.pdf" download>Download CV</a>
+        </div>
+        <div class="stats">
+          <div class="stat"><div class="num">15+ </div><div class="muted">Projects</div></div>
+          <div class="stat"><div class="num">6+ </div><div class="muted">Tech Stacks</div></div>
+          <div class="stat"><div class="num">3 </div><div class="muted">Internships</div></div>
+        </div>
+      </div>
+      <div>
+        <div class="card hero-card center">
+          <img class="avatar" src="https://images.unsplash.com/photo-1607746882042-944635dfe10e?q=80&w=400&auto=format&fit=crop" alt="Profile avatar placeholder"/>
+          <h3 style="margin:.8rem 0 .2rem">Suman Sourav Chakra</h3>
+          <div class="muted">Full‑stack Developer • AI/ML • Cloud</div>
+          <div style="margin-top: .8rem;">
+            <span class="chip">JavaScript</span>
+            <span class="chip">TypeScript</span>
+            <span class="chip">React</span>
+            <span class="chip">Node.js</span>
+            <span class="chip">Express</span>
+            <span class="chip">MongoDB</span>
+          </div>
+        </div>
+      </div>
     </div>
   </header>
 
-  <nav>
-    <ul class="container">
-      <li><a href="#about">About</a></li>
-      <li><a href="#skills">Skills</a></li>
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-  </nav>
-
-  <main class="container">
-    <section id="about">
-        <h2 class="animate animate-delay-1">About Me</h2>
-        <p class="animate animate-delay-2">
-          Hi! I'm <strong>Suman Sourav Chakra</strong>, a 3rd-year Computer Science student at Trident Academy of Technology, Bhubaneswar.
-          I’m passionate about software engineering and always curious to explore new tech that solves real-world problems.
-          I enjoy building and exploring full stack web development, and continuously learning in areas like cybersecurity and data structures.
-          <br><br>
-          I’m currently seeking a summer internship where I can apply my skills, gain real-world experience, and contribute meaningfully to a team.
-          I'm driven, detail-oriented, and ready to grow into a well-rounded software developer.
-        </p>
-      </section>
-      
-
-    <section id="skills">
-      <h2>Skills</h2>
-      <div class="card">
-        <ul>
-          <li>Java, Python, C, JavaScript</li>
-          <li>MySQL,DSA, Git & GitHub</li>
-          <li>Front-end Development (HTML, CSS, JavaScript)</li>
-          <li>Cybersecurity (Basics)</li>
-          <li>Data Science (Basics)</li>
-        </ul>
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="container">
+      <div class="section-head">
+        <h2 class="section-title">About Me</h2>
+        <a class="pill" href="#contact">Available for projects</a>
       </div>
-    </section>
+      <div class="about-grid">
+        <div class="card">
+          <p>
+            I’m a final‑year B.Tech (CSE) student, enthusiastic and detail‑oriented with strong interests in programming, artificial intelligence, cloud computing, and full‑stack development (MERN). I enjoy solving problems, building practical applications that bridge theory with real‑world use cases, and collaborating in fast‑paced teams.
+          </p>
+          <p>
+            When I’m not coding, I refine systems design, read about scalable architectures, and experiment with deployment pipelines.
+          </p>
+          <div class="kpis">
+            <div class="kpi"><div class="big">2+</div><div class="muted">Hackathons</div></div>
+            <div class="kpi"><div class="big">5</div><div class="muted">Open‑source PRs</div></div>
+            <div class="kpi"><div class="big">Top 10%</div><div class="muted">DSA Leaderboard</div></div>
+            <div class="kpi"><div class="big">AWS</div><div class="muted">Deployments</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Quick Facts</h3>
+          <div style="display:flex; flex-wrap:wrap; gap:.5rem; margin:.6rem 0 1rem;">
+            <span class="chip">Problem Solving</span>
+            <span class="chip">Clean Architecture</span>
+            <span class="chip">REST & APIs</span>
+            <span class="chip">JWT & Auth</span>
+            <span class="chip">CI/CD</span>
+            <span class="chip">Docker</span>
+          </div>
+          <div class="row">
+            <div>
+              <div style="margin-bottom:.6rem; font-weight:700;">JavaScript / TypeScript</div>
+              <div class="bar"><span style="width: 88%"></span></div>
+            </div>
+            <div>
+              <div style="margin-bottom:.6rem; font-weight:700;">React & Next.js</div>
+              <div class="bar"><span style="width: 84%"></span></div>
+            </div>
+            <div>
+              <div style="margin-bottom:.6rem; font-weight:700;">Node.js & Express</div>
+              <div class="bar"><span style="width: 86%"></span></div>
+            </div>
+            <div>
+              <div style="margin-bottom:.6rem; font-weight:700;">MongoDB / SQL</div>
+              <div class="bar"><span style="width: 78%"></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <section id="projects">
-      <h2>Projects</h2>
-      <div class="card">
-        <h3>Student Management System</h3>
-        <p>A Java + MySQL app to manage student records efficiently.</p>
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="container">
+      <div class="section-head">
+        <h2 class="section-title">Core Skills</h2>
+        <span class="muted">Tech I use day‑to‑day</span>
       </div>
-      <div class="card">
-        <h3>Portfolio Website</h3>
-        <p>Responsive personal website using HTML, CSS, and JavaScript.</p>
+      <div class="skills">
+        <div class="card">
+          <h3>Frontend</h3>
+          <p class="muted">React, Next.js, Vite, Redux, Tailwind, HTML5/CSS3</p>
+          <div><span class="chip">React</span><span class="chip">Next.js</span><span class="chip">Vite</span><span class="chip">Tailwind</span><span class="chip">Redux</span></div>
+        </div>
+        <div class="card">
+          <h3>Backend</h3>
+          <p class="muted">Node.js, Express, REST, Auth (JWT/OAuth), WebSockets</p>
+          <div><span class="chip">Express</span><span class="chip">JWT</span><span class="chip">Socket.io</span><span class="chip">Zod</span></div>
+        </div>
+        <div class="card">
+          <h3>Data & Cloud</h3>
+          <p class="muted">MongoDB, PostgreSQL, Redis, Docker, AWS, CI/CD (GitHub Actions)</p>
+          <div><span class="chip">MongoDB</span><span class="chip">PostgreSQL</span><span class="chip">Redis</span><span class="chip">Docker</span><span class="chip">AWS</span></div>
+        </div>
       </div>
-      <div class="card">
-        <h3>Online Quiz App</h3>
-        <p>Python + Tkinter based GUI app for MCQs with score tracking.</p>
-      </div>
-    </section>
+    </div>
+  </section>
 
-    <section id="contact">
-      <h2>Contact</h2>
-      <div class="card">
-        <p>Email: sumanchakra2004@gmail.com</p>
-        <p>Phone: +91 7846975607</p>
-        <p>Location: Bhubaneswar, India</p>
-        <p>GitHub Profile: https://github.com/Suman7259 </p>
-        <p>LinkedIn Profile: https://www.linkedin.com/in/suman-sourav-chakra-0a1b4a1b2/</p>
-        <p>LeetCode Profile: https://leetcode.com/u/suman_sourav_07/</p>
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="container">
+      <div class="section-head">
+        <h2 class="section-title">Selected Projects</h2>
+        <a class="pill" href="https://github.com/" target="_blank" rel="noreferrer">More on GitHub →</a>
       </div>
-    </section>
-  </main>
+      <div class="grid">
+        <a class="card project" href="#" target="_blank" rel="noreferrer">
+          <img class="thumb" src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1200&auto=format&fit=crop" alt="Project 1">
+          <div class="meta">
+            <div>
+              <span class="tag">MERN</span>
+              <span class="tag">JWT</span>
+            </div>
+            <h3>TaskFlow — Team Task Manager</h3>
+            <p class="muted">Kanban boards, real‑time updates with Socket.io, role‑based access, Dockerized.</p>
+          </div>
+        </a>
+        <a class="card project" href="#" target="_blank" rel="noreferrer">
+          <img class="thumb" src="https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1200&auto=format&fit=crop" alt="Project 2">
+          <div class="meta">
+            <div>
+              <span class="tag">Next.js</span>
+              <span class="tag">SSR</span>
+            </div>
+            <h3>Travelwise — Smart Trip Planner</h3>
+            <p class="muted">Itineraries, budget tracking, and map‑based discovery; hosted on Vercel + Mongo Atlas.</p>
+          </div>
+        </a>
+        <a class="card project" href="#" target="_blank" rel="noreferrer">
+          <img class="thumb" src="https://images.unsplash.com/photo-1556157382-97eda2d62296?q=80&w=1200&auto=format&fit=crop" alt="Project 3">
+          <div class="meta">
+            <div>
+              <span class="tag">Flask</span>
+              <span class="tag">ML</span>
+            </div>
+            <h3>JokeSense — Sentiment & Humor Classifier</h3>
+            <p class="muted">Simple ML app to classify text humor level; train/test visualizations included.</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
 
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="container">
+      <div class="section-head">
+        <h2 class="section-title">Experience & Education</h2>
+        <span class="muted">What shaped my engineering mindset</span>
+      </div>
+      <div class="row">
+        <div class="card">
+          <h3>Experience</h3>
+          <div class="timeline">
+            <div class="tl-item">
+              <h4>Full‑stack Developer Intern • Acme Labs</h4>
+              <div class="muted">Jan 2025 – Apr 2025 · Remote</div>
+              <p>Built RESTful APIs, integrated JWT auth, and improved Lighthouse performance from 72 → 92.</p>
+              <div><span class="chip">Node.js</span> <span class="chip">React</span> <span class="chip">MongoDB</span></div>
+            </div>
+            <div class="tl-item">
+              <h4>Cloud & DevOps Intern • CloudNine</h4>
+              <div class="muted">Jun 2024 – Aug 2024 · Hybrid</div>
+              <p>Containerized apps with Docker, set up CI/CD via GitHub Actions, reduced deploy time by 40%.</p>
+              <div><span class="chip">Docker</span> <span class="chip">AWS</span> <span class="chip">CI/CD</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Education</h3>
+          <div class="timeline">
+            <div class="tl-item">
+              <h4>B.Tech — Computer Science & Engineering</h4>
+              <div class="muted">2021 – 2025</div>
+              <p>Coursework: DSA, DBMS, OS, CN, AI/ML, Cloud. Final‑year project on scalable MERN micro‑services.</p>
+            </div>
+            <div class="tl-item">
+              <h4>Certifications & Achievements</h4>
+              <p>GCP Essentials, AWS Cloud Practitioner (in‑progress), CodeChef ★★★, LeetCode 300+ problems.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section id="testimonials">
+    <div class="container">
+      <div class="section-head">
+        <h2 class="section-title">Testimonials</h2>
+        <span class="muted">What people say</span>
+      </div>
+      <div class="testimonials">
+        <div class="card">
+          <p class="quote">“Suman is quick to grasp complex requirements and translates them into clean, maintainable code. A reliable team player.”</p>
+          <div class="muted">— Mentor, Acme Labs</div>
+        </div>
+        <div class="card">
+          <p class="quote">“Delivered features ahead of schedule and improved our CI pipeline. Great ownership and communication.”</p>
+          <div class="muted">— DevOps Lead, CloudNine</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="container">
+      <div class="section-head">
+        <h2 class="section-title">Contact Me</h2>
+        <span class="muted">Let’s build something awesome</span>
+      </div>
+      <div class="row">
+        <div class="card">
+          <form id="contactForm" action="https://formspree.io/f/your-id" method="POST">
+            <input name="name" type="text" placeholder="Your Name" required />
+            <input name="email" type="email" placeholder="Email Address" required />
+            <textarea name="message" placeholder="Your Message" required></textarea>
+            <button class="btn brand" type="submit">Send Message</button>
+            <div id="formMsg" class="muted" aria-live="polite"></div>
+          </form>
+        </div>
+        <div class="card">
+          <h3>Find me online</h3>
+          <p class="muted">I’m active on GitHub and LinkedIn. Feel free to reach out for collaborations or opportunities.</p>
+          <div class="social">
+            <a href="https://github.com/your-github" target="_blank" rel="noreferrer" aria-label="GitHub">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2C6.48 2 2 6.58 2 12.26c0 4.51 2.87 8.33 6.84 9.68.5.1.68-.22.68-.49 0-.24-.01-.87-.01-1.71-2.78.62-3.37-1.37-3.37-1.37-.45-1.17-1.1-1.48-1.1-1.48-.9-.63.07-.62.07-.62 1 .07 1.53 1.05 1.53 1.05.89 1.57 2.34 1.12 2.91.85.09-.67.35-1.12.63-1.37-2.22-.26-4.55-1.14-4.55-5.08 0-1.12.39-2.03 1.03-2.74-.1-.26-.45-1.31.1-2.73 0 0 .85-.28 2.79 1.05.81-.23 1.68-.35 2.55-.35.86 0 1.74.12 2.55.35 1.94-1.33 2.79-1.05 2.79-1.05.55 1.42.2 2.47.1 2.73.64.71 1.03 1.62 1.03 2.74 0 3.95-2.34 4.82-4.57 5.07.36.32.68.95.68 1.92 0 1.39-.01 2.51-.01 2.85 0 .27.18.6.69.49A10.04 10.04 0 0 0 22 12.26C22 6.58 17.52 2 12 2Z" fill="currentColor"/></svg>
+            </a>
+            <a href="https://www.linkedin.com/in/your-linkedin" target="_blank" rel="noreferrer" aria-label="LinkedIn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6.94 7.5a1.94 1.94 0 1 1 0-3.88 1.94 1.94 0 0 1 0 3.88ZM3.75 21.25h6.38V9.75H3.75v11.5ZM13.5 21.25h6.38v-6.3c0-3.35-1.79-4.91-4.19-4.91-1.9 0-2.75 1.05-3.23 1.79v-1.53h-6.1v11.5h6.14v-6.39c0-1.69.32-3.33 2.42-3.33 2.07 0 2.1 1.94 2.1 3.44v6.28Z" fill="currentColor"/></svg>
+            </a>
+            <a href="mailto:suman@example.com" aria-label="Email">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 6.75A1.75 1.75 0 0 1 4.75 5h14.5A1.75 1.75 0 0 1 21 6.75v10.5A1.75 1.75 0 0 1 19.25 19H4.75A1.75 1.75 0 0 1 3 17.25V6.75Zm1.75-.25a.25.25 0 0 0-.25.25v.33l7.5 4.69 7.5-4.7V6.75a.25.25 0 0 0-.25-.25H4.75Zm14.5 2.2-6.9 4.32a1.75 1.75 0 0 1-1.9 0L3.75 8.7v8.55c0 .14.11.25.25.25h14.5c.14 0 .25-.11.25-.25V8.7Z" fill="currentColor"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
   <footer>
-    <p>© 2025 Suman Sourav Chakra</p>
+    <div class="container" style="display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap;">
+      <div>© <span id="year"></span> • Designed & built by Suman Sourav Chakra</div>
+      <div class="muted">Made with ♥, HTML/CSS/JS</div>
+    </div>
   </footer>
 
+  <script>
+    // Theme toggle
+    const themeBtn = document.getElementById('themeToggle');
+    const root = document.documentElement;
+    const pref = localStorage.getItem('theme');
+    if (pref === 'light') root.classList.add('light');
+    themeBtn.addEventListener('click', () => {
+      root.classList.toggle('light');
+      localStorage.setItem('theme', root.classList.contains('light') ? 'light' : 'dark');
+    });
+
+    // Mobile menu
+    const menuBtn = document.getElementById('menuToggle');
+    const links = document.getElementById('nav-links');
+    menuBtn && menuBtn.addEventListener('click', () => {
+      links.style.display = links.style.display === 'flex' ? 'none' : 'flex';
+      links.style.flexDirection = 'column';
+      links.style.gap = '0.4rem';
+      links.style.position = 'absolute';
+      links.style.right = '1rem';
+      links.style.top = '60px';
+      links.style.background = getComputedStyle(document.documentElement).getPropertyValue('--bg-soft');
+      links.style.padding = '0.6rem';
+      links.style.border = '1px solid ' + getComputedStyle(document.documentElement).getPropertyValue('--stroke');
+      links.style.borderRadius = '12px';
+      links.style.boxShadow = 'var(--shadow)';
+    });
+
+    // Active link highlight (basic scrollspy)
+    const navLinks = [...document.querySelectorAll('.links a')];
+    const sections = navLinks.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+    const opts = { rootMargin: '-40% 0px -55% 0px', threshold: 0 };
+    const obs = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){
+          navLinks.forEach(l=>l.classList.remove('active'));
+          const id = '#' + e.target.id;
+          const active = navLinks.find(l=> l.getAttribute('href')===id);
+          active && active.classList.add('active');
+        }
+      })
+    }, opts);
+    sections.forEach(s => s && obs.observe(s));
+
+    // Contact form UX (no backend required — works with Formspree if ID set)
+    const form = document.getElementById('contactForm');
+    const msg = document.getElementById('formMsg');
+    if (form) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        msg.textContent = 'Sending…';
+        try {
+          const res = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { 'Accept': 'application/json' } });
+          if (res.ok) { msg.textContent = 'Thanks! I will get back to you soon.'; form.reset(); }
+          else { msg.textContent = 'Oops, something went wrong. You can email me instead.'; }
+        } catch (err) { msg.textContent = 'Network error. Please try again later.'; }
+      });
+    }
+
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
